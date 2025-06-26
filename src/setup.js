@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function setup() {
-  console.log("⚙️ Setting up environment...");
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
@@ -14,10 +13,8 @@ export async function setup() {
     ? new Date(process.env.TOKEN_DATE)
     : yesterday;
 
-  console.log(`🗓️ Token generated on: ${oldDate.toLocaleDateString()}`);
 
   if (oldDate <= yesterday || isNaN(oldDate.getTime())) {
-    console.log("⏳ Generating new token...");
     const currToken = await openSubtitlesLogin(process.env.OSUB_USERNAME, process.env.OSUB_PASSWORD);
     // const currToken = "mocked_token_for_testing-12345"; // Mocked token for testing purposes
     const currDate = new Date();
@@ -36,13 +33,14 @@ export async function setup() {
       }
     );
 
-    process.env.JWT_TOKEN = currToken;
-    process.env.TOKEN_DATE = currDate.toISOString();
-
-    console.log("✅ New token successfuly generated.");
-    return currToken;
+    console.log(currToken);
+    return 1;
   } else {
-    console.log("🔑 Using existing token.");
-    return process.env.JWT_TOKEN;
+    //Jogando token no stdout
+    console.log(process.env.JWT_TOKEN);
+    return 1;
   }
 }
+
+
+await setup();

@@ -9,6 +9,12 @@ param(
 )
 
 $scriptFolder = Split-Path -Parent $MyInvocation.MyCommand.Path
+Push-Location $scriptFolder
+Write-Host "Generating authentication..."
+$jwtToken = & node "$scriptFolder\src\setup.js"
+Pop-Location
+
+
 
 # All the removals from the directory listing is specific for my Doctor Who episodes
 # Adapt the condition as needed for your use case
@@ -21,7 +27,7 @@ Get-ChildItem -Path $episodeFolder | Where-Object {
   Push-Location $scriptFolder
 
   # Call the node script with the full file path
-  & node .\src\app.js "$filePath"
+  & node .\src\app.js "$filePath" "$jwtToken"
 
   # Return to the episode folder
   Pop-Location

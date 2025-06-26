@@ -1,4 +1,3 @@
-import { setup } from "./setup.js";
 import { generateParams, saveSubtitleFile } from "./utils/utils.js";
 import { openSubtitlesSearch, openSubtitlesDownload } from "./apis/openSubtitles.js";
 import dotenv from "dotenv";
@@ -8,14 +7,14 @@ dotenv.config();
 async function main() {
   // Getting path from command line arguments. As I'm going to control the arguments passed in the script, I am assuming the arguments are always valid.
   const fullPath = process.argv[2];
-
+  const token = process.argv[3];
+  
   // Separating the folder path and file name from the file path will be useful for later operations.
   const filePathArray = fullPath.split("\\");
   const fileName = filePathArray[filePathArray.length - 1];
   const folderPath = filePathArray.slice(0, -1).join("\\");
 
   // Running the setup 'cause we need a JWT Token for the download request.
-  const token = await setup();
 
   console.log(`🎞️ File name: ${fileName}`);
   console.log(`📁 Folder: ${folderPath}`);
